@@ -5,6 +5,7 @@ const articleController = require('../controllers/article');
 
 // Routes
 router.post('/create', articleController.create);
+router.get('/get', articleController.get);
 
 // Test route
 router.get('/test', articleController.test);
