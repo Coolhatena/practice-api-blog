@@ -13,35 +13,13 @@ const port = 3900;
 app.use(cors());
 
 // Convert body into a JSON object
-app.use(express.json());
+app.use(express.json()); // Get data with content-type: application/json
+app.use(express.urlencoded({extended: true})); // Get data with content-type: application/x-www-form-urlencoded
 
-// Create routes
-app.get('/test', (req, res) => {
-	console.log('Endpoint /test executed');
-	res.status(200).json({
-		colaborators: ["Pedro", "Christian", "Eduardo"],
-		createdBy: "Anthos labs"
-	})
+// Load routes
+const routesArticle = require('./routes/article');
 
-	// return res.status(200).send(`
-	// 		<div>
-	// 			<h1>Route /test</h1>
-	// 			<p>Anthos labs web tech stack</p>
-	// 			<ul>
-	// 				<li>Frontend: ReactJs</li>
-	// 				<li>Backend: NodeJs</li>
-	// 			</ul>
-	// 		</div>
-	// 	`)
-});
-
-app.get("/", (req, res) => {
-	res.status(200).send(`
-		<div>
-			<h1>Anthos labs</h1>
-		</div>
-	`)
-})
+app.use('/api', routesArticle);
 
 // Create server and listen http petitions
 app.listen(port, () => {
