@@ -19,7 +19,7 @@ app.use(express.urlencoded({extended: true})); // Get data with content-type: ap
 // Load routes
 const routesArticle = require('./routes/article');
 
-app.use('/api', routesArticle);
+app.use('/articles', routesArticle);
 
 // Create server and listen http petitions
 app.listen(port, () => {
