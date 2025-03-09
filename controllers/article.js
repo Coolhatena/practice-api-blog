@@ -10,7 +10,7 @@ const anthos = (req, res) => {
 }
 
 
-const create = (req, res) => {
+const create = async (req, res) => {
 	// Get the body of the request
 	const params = req.body;
 	// Validate body
@@ -27,19 +27,36 @@ const create = (req, res) => {
 
 	// Create the article object
 	const article = new Article(params);
-
+	
 	// Save the article in the database and return a response
-	article.save()
-		.then((article) => {
-			return res.status(200).json({status: "success", message:`Article created`, article});
-		})
-		.catch((error) => {
-			return res.status(400).json({status: "error", message: error.message});
-		});
+	try {
+		const result = await article.save()
+		return res.status(200).json({status: "success", message:`Article created`, result});
+	} catch (error) {
+		return res.status(400).json({status: "error", message: error.message});
+	}
+}
+
+const get = async (req, res) => {
+	try {
+		const articles = await Article.find({}).exec();
+
+		if (!articles) {
+			return res.status(404).json({status: "error", message: "No articles found"});
+		}
+
+		return res.status(200).json({status: "success", articles});
+
+	} catch (error) {
+		return res.status(400).json({status: "error", message: error.message});
+	}
+
+
 }
 
 module.exports = {
 	test,
 	anthos,
-	create
+	create,
+	get,
 }
