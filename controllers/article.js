@@ -170,6 +170,30 @@ const image = (req, res) => {
 
 }
 
+const search = async (req, res) => {
+	// Get search string
+	let searchQuery = req.params.search
+
+	// use mongo find with OR
+	let articles = await Article.find({$or: [
+		{title: {$regex: searchQuery, $options: 'i'}},
+		{content: {$regex: searchQuery, $options: 'i'}}
+	]}).sort({date: -1}).exec();
+
+	// Return result
+	if (articles.length > 0) {
+		return res.status(200).json({
+			status: "success",
+			articles
+		})
+	} else {
+		return res.status(404).json({
+			status: "error",
+			message: "No matches found"
+		})
+	}
+}
+
 module.exports = {
 	anthos,
 	create,
@@ -179,4 +203,5 @@ module.exports = {
 	remove,
 	upload,
 	image,
+	search
 }
