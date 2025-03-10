@@ -23,6 +23,7 @@ router.delete('/article/:id', articleController.remove);
 router.put('/article/:id', articleController.edit);
 router.post('/upload-image/:id', [uploads.single("file0")], articleController.upload);
 router.get('/image/:file', articleController.image);
+router.get('/search/:search', articleController.search);
 
 // Test route
 router.get('/anthos', articleController.anthos);
